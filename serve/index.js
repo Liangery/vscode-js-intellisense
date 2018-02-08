@@ -23,6 +23,7 @@ documents.listen(connection);
 //文件内容改动 , 可做代码检测
 documents.onDidChangeContent(change => {
     // console.log(change);
+    validateTextDocument(change.document);
 });
 var workspacePath = "D:\\web\\mobile\\afp\\js\\_ccj_\\aa",
     initIntellisenseFiles = [],
@@ -33,8 +34,9 @@ var workspacePath = "D:\\web\\mobile\\afp\\js\\_ccj_\\aa",
             data: 1
         }
     ],
-    curIntellisenseIndex = 0;
+    curIntellisenseIndex = 0,
     
+    curLineIntellisenseList = []
 
 function initIntellisenseCompletionList() {
     findAllFile(workspacePath);
@@ -43,7 +45,17 @@ function initIntellisenseCompletionList() {
     console.log(initIntellisenseList);
     console.log('end write initIntellisenseList');
 }
-
+function validateTextDocument(textDocument){
+    let lines = textDocument.getText().split(/\r?\n/g);
+    if(lines.length == 0){
+        return;
+    }
+    let linesLen = lines.length;
+    let lastLine = lines[linesLen - 1];
+    console.log('当前输入行的内容：' + lastLine);
+    let curchart = lastLine[lastLine.length-1];
+    console.log('当前输入的值：' + curchart);
+}
 function findAllFile(dir) {
     if(isFile(dir)){
         initIntellisenseFiles.push(dir);
@@ -97,11 +109,12 @@ function readAllFile(files) {
     for (var i = 0; i < files.length; i++) {
         var file = files[i],
             fileDataString = readFile(file),
-            words = fileDataString.match(/\w{3,}/ig);
-            // words = fileDataString.match(/^([!0-9])\w+$\w{3,}/ig);
+            // words = fileDataString.match(/\w{3,}/ig);
+            words = fileDataString.match(/\w{3,}(\w|\.)*/ig);//解析成带对象索引的字符串
         if (!words) {
             continue;
         }
+        console.log(words);
         // console.log('start resolve filename :' + file);
 
         var newWords = Array.from(new Set(words));
@@ -201,6 +214,9 @@ connection.onDocumentHighlight(documentHighlightParams => {
 //智能感知部分开始
 connection.onCompletion(TextDocumentPositionParams => {
     console.log(TextDocumentPositionParams, "TextDocumentPositionParams");
+    // let curLineIndex = TextDocumentPositionParams.position.line;
+    // let curLineCharIndex = TextDocumentPositionParams.position.character;
+
     return initIntellisenseList;
 });
 connection.onCompletionResolve(item => {
