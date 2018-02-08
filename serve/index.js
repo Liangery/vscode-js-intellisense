@@ -35,8 +35,8 @@ var workspacePath = "D:\\web\\mobile\\afp\\js\\_ccj_\\aa",
         }
     ],
     curIntellisenseIndex = 0,
-    
-    curLineIntellisenseList = []
+    keyWordsByObj = [],
+    curLineIntellisenseList = [];
 
 function initIntellisenseCompletionList() {
     findAllFile(workspacePath);
@@ -54,6 +54,18 @@ function validateTextDocument(textDocument){
     let lastLine = lines[linesLen - 1];
     console.log('当前输入行的内容：' + lastLine);
     let curchart = lastLine[lastLine.length-1];
+    if(curchart == '.'){
+        let wordsobj = lastLine.match(/\w{3,}(\w|\.)*/ig);
+    
+        let lastWordObj = wordsobj[wordsobj.length - 1];
+        let wordArr = lastWordObj.split('.');
+        
+        for(var i=0;wordArr && i<wordArr.length;i++){
+
+        }
+
+    }
+    
     console.log('当前输入的值：' + curchart);
 }
 function findAllFile(dir) {
@@ -109,26 +121,33 @@ function readAllFile(files) {
     for (var i = 0; i < files.length; i++) {
         var file = files[i],
             fileDataString = readFile(file),
-            // words = fileDataString.match(/\w{3,}/ig);
-            words = fileDataString.match(/\w{3,}(\w|\.)*/ig);//解析成带对象索引的字符串
+            words = fileDataString.match(/\w{3,}/ig),
+            wordsobj = fileDataString.match(/\w{3,}(\w|\.)*/ig);//解析成带对象索引的字符串
         if (!words) {
             continue;
         }
-        console.log(words);
         // console.log('start resolve filename :' + file);
 
         var newWords = Array.from(new Set(words));
+        keyWordsByObj = keyWordsByObj.concat(wordsobj);
         keyWords = keyWords.concat(newWords);
-        // console.log(newWords);
 
         // console.log('end resolve filename :' + file);
     }
     for(var i=0;i<keyWords.length;i++){
-        var key = keyWords[i];
+        let key = keyWords[i];
         if(!_jsWords[key] && !(/^[0-9]/.test(key))){
             _jsWords[key] = 1;
             addIntellisenseItem(key);
         }
+    }
+    for(var i=0;i<keyWordsByObj.length;i++){
+        let keys = keyWordsByObj[i],
+            keyArr = keys.split('.');
+        for(var j=0;j<keyArr.length;j++){
+            
+        }
+
     }
     console.log( '智能提示解析的关键字的长度：'+initIntellisenseList.length);
 }
