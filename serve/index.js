@@ -45,6 +45,10 @@ function initIntellisenseCompletionList() {
 }
 
 function findAllFile(dir) {
+    if(isFile(dir)){
+        initIntellisenseFiles.push(dir);
+        return;
+    }
     var dirArr = fs.readdirSync(dir),
         _thisfn = arguments.callee;
     dirArr.forEach(function (v, i) {
@@ -140,7 +144,7 @@ function readFile(fileName) {
 
 //初始化设置
 connection.onInitialize(params => {
-    // workspacePath = params.rootPath;
+    workspacePath = params.rootPath;
     connection.console.log(
         `[Server(${process.pid}) Started and initialize received,path  ${workspacePath}`
     );
