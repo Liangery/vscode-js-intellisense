@@ -24,14 +24,19 @@ documents.listen(connection);
 documents.onDidChangeContent(change => {
     // console.log(change);
 });
-var workspacePath = "",
+var workspacePath = "D:\\web\\mobile\\afp\\js\\_ccj_\\aa",
     initIntellisenseFiles = [],
     initIntellisenseList = [];
+    
 
-function initIntellisenseCompletionList(){
+function initIntellisenseCompletionList() {
     findAllFile(workspacePath);
     readAllFile(initIntellisenseFiles);
+    console.log('write initIntellisenseList: ');
+    console.log(initIntellisenseList);
+    console.log('end write initIntellisenseList');
 }
+
 function findAllFile(dir) {
     var dirArr = fs.readdirSync(dir),
         _thisfn = arguments.callee;
@@ -46,35 +51,81 @@ function findAllFile(dir) {
         }
     });
 }
-function readAllFile(files){
-    for(var i=0;i<files.length;i++){
+
+function readAllFile(files) {
+    console.log(files);
+    var _jsWords = {
+        "break": 1,
+        "case": 1,
+        "catch": 1,
+        "continue": 1,
+        "default": 1,
+        "delete": 1,
+        "do": 1,
+        "else": 1,
+        "finally": 1,
+        "for": 1,
+        "function": 1,
+        "if": 1,
+        "in": 1,
+        "instanceof": 1,
+        'new': 1,
+        "return": 1,
+        "switch": 1,
+        "this": 1,
+        "throw": 1,
+        "try": 1,
+        "typeof": 1,
+        "var": 1,
+        "void": 1,
+        "while": 1,
+        "with": 1
+    },keyWords = [];
+    for (var i = 0; i < files.length; i++) {
         var file = files[i],
             fileDataString = readFile(file),
-            lines = fileDataString.split(/?\r?\n/g);
-        for(var j=0;j<lines.length;j++){
-            var line = lines[j],
-                words = line.split('.');
-            for(var k=0;k<words.length;k++){
-                addIntellisenseItem(words[k]);
-            }
+            words = fileDataString.match(/\w{3,}/ig);
+        if (!words) {
+            continue;
+        }
+        console.log('start resolve filename :' + file);
+
+        var newWords = Array.from(new Set(words));
+        keyWords = keyWords.concat(newWords);
+        console.log(newWords);
+
+        console.log('end resolve filename :' + file);
+    }
+    for(var i=0;i<keyWords.length;i++){
+
+        if(!_jsWords[keyWords[i]]){
+
         }
     }
+    console.log(keyWords.length);
 }
-function addIntellisenseItem(text){
+
+function addIntellisenseItem(text) {
     var len = initIntellisenseList.length,
         item = {
             label: text,
             kind: CompletionItemKind.Text,
             data: len
         };
-    for(var i=0;i<initIntellisenseList.length;i++){
-        if(initIntellisenseList[i].label == text){
-           continue; 
-        }else{
+    console.log('text  :' + text + '    len :' + len)
+    if (!len) {
+        initIntellisenseList.push(item);
+        return;
+    }
+    for (var i = 0; i < initIntellisenseList.length; i++) {
+        if (initIntellisenseList[i].label == text) {
+            continue;
+        } else {
             initIntellisenseList.push(item);
         }
     }
 }
+
 function isDirectory(fileName) {
     if (fs.existsSync(fileName)) return fs.statSync(fileName).isDirectory();
 }
@@ -89,10 +140,11 @@ function readFile(fileName) {
 
 //初始化设置
 connection.onInitialize(params => {
-    workspacePath = params.rootPath;
+    // workspacePath = params.rootPath;
     connection.console.log(
         `[Server(${process.pid}) Started and initialize received,path  ${workspacePath}`
     );
+    initIntellisenseCompletionList();
     return {
         capabilities: {
             textDocumentSync: documents.syncKind,
@@ -145,26 +197,15 @@ connection.onDocumentHighlight(documentHighlightParams => {
 //智能感知部分开始
 connection.onCompletion(TextDocumentPositionParams => {
     console.log(TextDocumentPositionParams, "TextDocumentPositionParams");
-    return [
-        {
-            label: "TypeScript",
-            kind: CompletionItemKind.Text,
-            data: 1
-        },
-        {
-            label: "JavaScript",
-            kind: CompletionItemKind.Text,
-            data: 2
-        }
-    ];
+    return initIntellisenseList;
 });
 connection.onCompletionResolve(item => {
     if (item.data === 1) {
         (item.detail = "TypeScript details"),
-            (item.documentation = "TypeScript documentation");
+        (item.documentation = "TypeScript documentation");
     } else if (item.data === 2) {
         (item.detail = "JavaScript details"),
-            (item.documentation = "JavaScript documentation");
+        (item.documentation = "JavaScript documentation");
     }
     return item;
 });
