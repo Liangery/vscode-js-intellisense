@@ -112,7 +112,7 @@ function readAllFile(files) {
     }
     for(var i=0;i<keyWords.length;i++){
         var key = keyWords[i];
-        if(!_jsWords[key]){
+        if(!_jsWords[key] && !(/^[0-9]/.test(key))){
             _jsWords[key] = 1;
             addIntellisenseItem(key);
         }
