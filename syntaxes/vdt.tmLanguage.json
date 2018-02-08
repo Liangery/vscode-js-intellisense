@@ -1,0 +1,63 @@
+{
+    "$schema":
+        "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "vdt",
+    "patterns": [
+        {
+            "include": "#keywords"
+        },
+        {
+            "include": "#strings"
+        },
+        {
+            "include": "source.js"
+        },
+        {
+            "include": "source.js.regexp"
+        },
+        {
+            "include": "source.js.jsx"
+        },
+        {
+            "include": "text.html.basic"
+        },
+        {
+            "include": "#vdt-scope-interpolation"
+        }
+    ],
+    "repository": {
+        "keywords": {
+            "patterns": [
+                {
+                    "name": "keyword.control.vdt",
+                    "match": "\\b(if|while|for|return)\\b"
+                }
+            ]
+        },
+        "strings": {
+            "name": "string.quoted.double.vdt",
+            "begin": "\"",
+            "end": "\"",
+            "patterns": [
+                {
+                    "name": "constant.character.escape.vdt",
+                    "match": "\\\\."
+                }
+            ]
+        },
+        "vdt-scope-interpolation": {
+            "name": "string.scope.interpolation.vdt",
+            "begin": "\\{{1,}",
+            "end": "\\}{1,}",
+            "patterns": [
+                {
+                    "include": "source.js"
+                },
+                {
+                    "include": "source.js.regexp"
+                }
+            ]
+        }
+    },
+    "scopeName": "source.vdt"
+}

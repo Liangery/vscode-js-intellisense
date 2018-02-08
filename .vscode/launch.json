@@ -1,0 +1,29 @@
+// A launch configuration that launches the extension inside a new window
+{
+    "version": "0.1.0",
+    "compounds": [
+        {
+            "name": "vdt-tool",
+            "configurations": ["client","serve"]
+        }
+    ],
+    "configurations": [
+        {
+            "name": "client",
+            "type": "extensionHost",
+            "request": "launch",
+            "runtimeExecutable": "${execPath}",
+            "args": ["--extensionDevelopmentPath=${workspaceRoot}"],
+            "sourceMaps": true
+        },
+        {
+            "name": "serve",
+            "type": "node",
+            "request": "attach",
+            "port": 6888,
+            "protocol": "inspector",
+            "outFiles": ["${workspaceRoot}/serve/**/*.js"],
+            "sourceMaps": true
+        }
+    ]
+}

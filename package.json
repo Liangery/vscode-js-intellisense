@@ -1,0 +1,55 @@
+{
+    "name": "vdt-tool",
+    "version": "1.3.0",
+    "displayName": "vdt扩展工具",
+    "description": "vdt 文件的VS Code 插件",
+    "main": "index.js",
+    "icon": "asset/vdt.png",
+    "scripts": {
+        "package": "vsce package",
+        "publish": "npm run patch",
+        "minor": "vsce publish minor",
+        "major": "vsce publish major",
+        "patch": "vsce publish patch",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "vscode:prepublish": "echo 'publish'"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/0851/vdt-tool.git"
+    },
+    "keywords": [
+        "vdt",
+        "templates",
+        "vscode",
+        "intact"
+    ],
+    "author": "gaoyongliang",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/0851/vdt-tool/issues"
+    },
+    "homepage": "https://github.com/0851/vdt-tool#readme",
+    "publisher": "kingsoft",
+    "engines": {
+        "vscode": "^1.19.0"
+    },
+    "categories": [
+        "Languages",
+        "Other",
+        "Snippets"
+    ],
+    "activationEvents": [
+        "onLanguage:javascript"
+    ],
+    "contributes": {
+        
+    },
+    "devDependencies": {
+        "vsce": "^1.36.1",
+        "vscode": "^1.1.10"
+    },
+    "dependencies": {
+        "vscode-languageclient": "^3.5.0"
+    }
+}
