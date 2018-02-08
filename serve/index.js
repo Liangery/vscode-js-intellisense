@@ -5,7 +5,7 @@ const {
     TextDocumentSyncKind,
     CompletionItemKind
 } = require("vscode-languageserver");
-console.log(__dirname);
+const fs = require("fs");
 // Creates the LSP connection
 const connection = createConnection(ProposedFeatures.all);
 // Create a manager for open text documents
@@ -24,10 +24,74 @@ documents.listen(connection);
 documents.onDidChangeContent(change => {
     // console.log(change);
 });
+var workspacePath = "",
+    initIntellisenseFiles = [],
+    initIntellisenseList = [];
+
+function initIntellisenseCompletionList(){
+    findAllFile(workspacePath);
+    readAllFile(initIntellisenseFiles);
+}
+function findAllFile(dir) {
+    var dirArr = fs.readdirSync(dir),
+        _thisfn = arguments.callee;
+    dirArr.forEach(function (v, i) {
+        if (!v.startsWith('.')) {
+            var tempdir = dir + '\\' + v;
+            if (isFile(tempdir) && tempdir.endsWith('.js')) {
+                initIntellisenseFiles.push(tempdir)
+            } else if (isDirectory(tempdir)) {
+                _thisfn(tempdir);
+            }
+        }
+    });
+}
+function readAllFile(files){
+    for(var i=0;i<files.length;i++){
+        var file = files[i],
+            fileDataString = readFile(file),
+            lines = fileDataString.split(/?\r?\n/g);
+        for(var j=0;j<lines.length;j++){
+            var line = lines[j],
+                words = line.split('.');
+            for(var k=0;k<words.length;k++){
+                addIntellisenseItem(words[k]);
+            }
+        }
+    }
+}
+function addIntellisenseItem(text){
+    var len = initIntellisenseList.length,
+        item = {
+            label: text,
+            kind: CompletionItemKind.Text,
+            data: len
+        };
+    for(var i=0;i<initIntellisenseList.length;i++){
+        if(initIntellisenseList[i].label == text){
+           continue; 
+        }else{
+            initIntellisenseList.push(item);
+        }
+    }
+}
+function isDirectory(fileName) {
+    if (fs.existsSync(fileName)) return fs.statSync(fileName).isDirectory();
+}
+
+function isFile(fileName) {
+    if (fs.existsSync(fileName)) return fs.statSync(fileName).isFile();
+}
+
+function readFile(fileName) {
+    if (fs.existsSync(fileName)) return fs.readFileSync(fileName, "utf-8");
+}
+
 //初始化设置
 connection.onInitialize(params => {
+    workspacePath = params.rootPath;
     connection.console.log(
-        `[Server(${process.pid}) Started and initialize received`
+        `[Server(${process.pid}) Started and initialize received,path  ${workspacePath}`
     );
     return {
         capabilities: {
@@ -75,6 +139,7 @@ connection.onDocumentFormatting(formatParams => {
 
 connection.onDocumentHighlight(documentHighlightParams => {
     const document = documents.get(documentHighlightParams.textDocument.uri);
+    console.log('onDocumentHighlight');
 });
 
 //智能感知部分开始
