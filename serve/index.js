@@ -26,7 +26,14 @@ documents.onDidChangeContent(change => {
 });
 var workspacePath = "D:\\web\\mobile\\afp\\js\\_ccj_\\aa",
     initIntellisenseFiles = [],
-    initIntellisenseList = [];
+    initIntellisenseList = [
+        {
+            label: "shannonliang",
+            kind: CompletionItemKind.Text,
+            data: 1
+        }
+    ],
+    curIntellisenseIndex = 0;
     
 
 function initIntellisenseCompletionList() {
@@ -55,6 +62,8 @@ function findAllFile(dir) {
 function readAllFile(files) {
     console.log(files);
     var _jsWords = {
+        "require":1,
+        "define":1,
         "break": 1,
         "case": 1,
         "catch": 1,
@@ -85,45 +94,36 @@ function readAllFile(files) {
         var file = files[i],
             fileDataString = readFile(file),
             words = fileDataString.match(/\w{3,}/ig);
+            // words = fileDataString.match(/^([!0-9])\w+$\w{3,}/ig);
         if (!words) {
             continue;
         }
-        console.log('start resolve filename :' + file);
+        // console.log('start resolve filename :' + file);
 
         var newWords = Array.from(new Set(words));
         keyWords = keyWords.concat(newWords);
-        console.log(newWords);
+        // console.log(newWords);
 
-        console.log('end resolve filename :' + file);
+        // console.log('end resolve filename :' + file);
     }
     for(var i=0;i<keyWords.length;i++){
-
-        if(!_jsWords[keyWords[i]]){
-
+        var key = keyWords[i];
+        if(!_jsWords[key]){
+            _jsWords[key] = 1;
+            addIntellisenseItem(key);
         }
     }
-    console.log(keyWords.length);
+    console.log( '智能提示解析的关键字的长度：'+initIntellisenseList.length);
 }
 
 function addIntellisenseItem(text) {
-    var len = initIntellisenseList.length,
-        item = {
+    curIntellisenseIndex ++;
+    var item = {
             label: text,
             kind: CompletionItemKind.Text,
-            data: len
+            data: curIntellisenseIndex
         };
-    console.log('text  :' + text + '    len :' + len)
-    if (!len) {
-        initIntellisenseList.push(item);
-        return;
-    }
-    for (var i = 0; i < initIntellisenseList.length; i++) {
-        if (initIntellisenseList[i].label == text) {
-            continue;
-        } else {
-            initIntellisenseList.push(item);
-        }
-    }
+    initIntellisenseList.push(item);
 }
 
 function isDirectory(fileName) {
