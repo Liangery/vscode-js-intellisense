@@ -24,11 +24,12 @@
         "vscode",
         "js"
     ],
-    "author": "gaoyongliang",
+    "author": "shannonliang",
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/shannonliang/vscode-js-intellisense/issues"
     },
+    "publisher":"shannonliang",
     "homepage": "https://github.com/shannonliang/vscode-js-intellisense/blob/master/README.md",
     "engines": {
         "vscode": "^1.19.0"
