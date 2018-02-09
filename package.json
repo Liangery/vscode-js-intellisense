@@ -27,9 +27,9 @@
     "author": "gaoyongliang",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/0851/vdt-tool/issues"
+        "url": "https://github.com/shannonliang/vscode-js-intellisense/issues"
     },
-    "homepage": "https://github.com/0851/vdt-tool#readme",
+    "homepage": "https://github.com/shannonliang/vscode-js-intellisense/blob/master/README.md",
     "publisher": "kingsoft",
     "engines": {
         "vscode": "^1.19.0"
