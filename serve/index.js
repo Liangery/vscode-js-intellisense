@@ -350,6 +350,7 @@ connection.onCompletion(TextDocumentPositionParams => {
     // console.log(curIntellisenseList, "TextDocumentPositionParams");
     // let curLineIndex = TextDocumentPositionParams.position.line;
     // let curLineCharIndex = TextDocumentPositionParams.position.character;
+    console.log(curIntellisenseIndex+"  curIntellisenseListIndex");
     if(curIntellisenseList && curIntellisenseList.length){
         return curIntellisenseList;
     }
