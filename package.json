@@ -1,6 +1,6 @@
 {
     "name": "js-intellisense",
-    "version": "1.3.0",
+    "version": "1.0.0",
     "displayName": "js-intellisense",
     "description": "vscode javascript intellisense",
     "main": "index.js",
