@@ -4,7 +4,7 @@
     "displayName": "js-intellisense",
     "description": "vscode javascript intellisense",
     "main": "index.js",
-    "icon": "intell.png",
+    "icon": "https://github.com/shannonliang/vscode-js-intellisense/blob/master/intell.png",
     "scripts": {
         "package": "vsce package",
         "publish": "npm run patch",
@@ -30,7 +30,6 @@
         "url": "https://github.com/shannonliang/vscode-js-intellisense/issues"
     },
     "homepage": "https://github.com/shannonliang/vscode-js-intellisense/blob/master/README.md",
-    "publisher": "kingsoft",
     "engines": {
         "vscode": "^1.19.0"
     },
