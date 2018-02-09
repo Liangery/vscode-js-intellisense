@@ -15,9 +15,9 @@ const documents = new TextDocuments();
 // The workspace folder this server is operating on
 
 documents.onDidOpen(event => {
-    connection.console.log(
-        `[Server(${process.pid}) Document opened: ${event.document.uri}`
-    );
+    // connection.console.log(
+    //     `[Server(${process.pid}) Document opened: ${event.document.uri}`
+    // );
 });
 documents.listen(connection);
 
@@ -35,9 +35,14 @@ var workspacePath = "D:\\web\\mobile\\afp\\js\\_ccj_\\aa",
             data: 1
         }
     ],
-    curIntellisenseIndex = 0,
+    curIntellisenseList=[],
+    curIntellisenseIndex = -1,
+    curConfigObj = {},
+    curFindObjFlag = 0,
+    initIntellisenseIndex = 0,
     configJs='',
-    keyWordsByObj = {},//解析当前配置的对象
+    configStr={},
+    keyWordsByObj = [],//解析当前配置的对象
     curLineIntellisenseList = [];
 
 function initIntellisenseCompletionList() {
@@ -47,41 +52,70 @@ function initIntellisenseCompletionList() {
     // console.log(initIntellisenseList);
     // console.log('end write initIntellisenseList');
 }
+function setIntellisenseCompletionList(){
+    initCurConfigObj();
+    var curObj = curConfigObj;
+
+    for(var i=0;i<keyWordsByObj.length - curFindObjFlag;i++){
+        var tempkey = keyWordsByObj[i];
+        if(tempkey == 'window'){
+            if(i!==0){
+                initCurConfigObj();
+                curObj = curConfigObj;
+            }
+            continue;
+        }
+        if(!curObj[tempkey]){
+            return;
+        }else{
+            curObj = curObj[tempkey];
+        }
+    }
+    // console.log(curObj);
+    for(var key in curObj){
+        addcurIntellisenseList(key);
+    }
+}
 function validateTextDocument(textDocument){
     var textDoc = textDocument.getText();
-    console.log('ccccccccc');
-    console.log(textDoc);
-    console.log('ccccccccc');
+
     let lines = textDocument.getText().split(/\r?\n/g);
     if(lines.length == 0){
         return;
     }
     let linesLen = lines.length;
     let lastLine = lines[linesLen - 1];
-    console.log('当前输入行的内容：' + lastLine);
+    // console.log('当前输入行的内容：' + lastLine);
     let curchart = lastLine[lastLine.length-1];
     if(curchart == '.'){
-        console.log('jinrogn')
+        keyWordsByObj = [];
+        curFindObjFlag = 0;
         let wordsobj = lastLine.match(/\w{3,}(\w|\.)*/ig);
         let lastWordObj = wordsobj[wordsobj.length - 1];
         let wordArr = lastWordObj.split('.');
         let firstWordObj = wordArr[0];
         var refObjArr = [];
         for(var i=0;wordArr && i<wordArr.length;i++){
-            refObjArr.push(wordArr[i]);
+            if(wordArr[i]){
+                refObjArr.push(wordArr[i]);
+            }
         }
         var resultRefObj = getObjRef(textDoc,wordArr[0]);
         keyWordsByObj = resultRefObj.concat(refObjArr);
-        console.log('当前输入对象的，关键字的索引数组：'+keyWordsByObj);
+        // console.log('当前输入对象的，关键字的索引数组：'+keyWordsByObj + '  length ' + keyWordsByObj.length);
     }
     
-    console.log('当前输入的值：' + curchart);
+    setIntellisenseCompletionList();
 }
 
 function getObjRef(str,name){
+    if(name == 'window'){
+        return [];
+    }
     var arr = [],
         r = getObjstr(str, name);
     if(r){
+        curFindObjFlag = 1;
         if(r.endsWith('.') && r){
             r=r.Substring(0,r.Length-1);
         }
@@ -195,27 +229,51 @@ function readAllFile(files) {
         }
     }
     
-    console.log( '智能提示解析的关键字的长度：'+initIntellisenseList.length);
+    // console.log( '智能提示解析的关键字的长度：'+initIntellisenseList.length);
 }
 
 function initKeyWordsObj(){
     if(!configJs && !isFile(configJs)){
         return;
     }
-    let fileDataString = readFile(configJs);
-    let fileDataObj = JSON.parse(fileDataString);
-    keyWordsByObj = fileDataObj.globalObject;
+    configStr = readFile(configJs);
+    let fileDataObj = JSON.parse(configStr);
+    if(fileDataObj.globalObject){
+        curConfigObj = fileDataObj.globalObject;
+    }
+    
     // console.log(keyWordsByObj.ccj);
+}
+function initCurConfigObj(){
+    curIntellisenseList = [];
+    curIntellisenseIndex = -1;
+    if(!configStr){
+        return;
+    }
+    let fileDataObj = JSON.parse(configStr);
+    if(fileDataObj.globalObject){
+        curConfigObj = fileDataObj.globalObject;
+    }
 }
 
 function addIntellisenseItem(text) {
+    initIntellisenseIndex ++;
+    var item = {
+            label: text,
+            kind: CompletionItemKind.Text,
+            data: initIntellisenseIndex
+        };
+    initIntellisenseList.push(item);
+}
+
+function addcurIntellisenseList(text){
     curIntellisenseIndex ++;
     var item = {
             label: text,
             kind: CompletionItemKind.Text,
             data: curIntellisenseIndex
         };
-    initIntellisenseList.push(item);
+    curIntellisenseList.push(item);
 }
 
 function isDirectory(fileName) {
@@ -233,9 +291,9 @@ function readFile(fileName) {
 //初始化设置
 connection.onInitialize(params => {
     workspacePath = params.rootPath;
-    connection.console.log(
-        `[Server(${process.pid}) Started and initialize received,path  ${workspacePath}`
-    );
+    // connection.console.log(
+        // `[Server(${process.pid}) Started and initialize received,path  ${workspacePath}`
+    // );
     initIntellisenseCompletionList();
     initKeyWordsObj();
     return {
@@ -268,32 +326,34 @@ connection.onDocumentSymbol(documentSymbolParms => {
 //监听定义
 connection.onDefinition(definitionParams => {
     const document = documents.get(definitionParams.textDocument.uri);
-    console.log(definitionParams, "definitionParams");
+    // console.log(definitionParams, "definitionParams");
 });
 //文档引用
 connection.onReferences(referenceParams => {
     const document = documents.get(referenceParams.textDocument.uri);
-    console.log(referenceParams, "referenceParams");
+    // console.log(referenceParams, "referenceParams");
 });
 
 //文档格式化
 connection.onDocumentFormatting(formatParams => {
     const document = documents.get(formatParams.textDocument.uri);
-    console.log(formatParams, "formatParams");
+    // console.log(formatParams, "formatParams");
 });
 
 connection.onDocumentHighlight(documentHighlightParams => {
     const document = documents.get(documentHighlightParams.textDocument.uri);
-    console.log('onDocumentHighlight');
+    // console.log('onDocumentHighlight');
 });
 
 //智能感知部分开始
 connection.onCompletion(TextDocumentPositionParams => {
-    console.log(TextDocumentPositionParams, "TextDocumentPositionParams");
+    // console.log(curIntellisenseList, "TextDocumentPositionParams");
     // let curLineIndex = TextDocumentPositionParams.position.line;
     // let curLineCharIndex = TextDocumentPositionParams.position.character;
-
-    return initIntellisenseList;
+    if(curIntellisenseList && curIntellisenseList.length){
+        return curIntellisenseList;
+    }
+    return  initIntellisenseList;
 });
 connection.onCompletionResolve(item => {
     if (item.data === 1) {
