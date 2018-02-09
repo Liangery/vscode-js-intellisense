@@ -1,7 +1,7 @@
 {
-    "name": "vdt-language-serve",
+    "name": "js-intellisense-serve",
     "version": "1.0.0",
-    "description": "vdt-language-serve",
+    "description": "js-intellisense-serve",
     "main": "index.js",
     "scripts": {},
     "engines": {
@@ -9,19 +9,19 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/0851/vdt-tool.git"
+        "url": "git+https://github.com/shannonliang/vscode-js-intellisense.git"
     },
     "keywords": [
-        "vdt",
-        "templates",
+        "intellisense",
+        "javascript",
         "vscode",
-        "intact"
+        "js"
     ],
     "bugs": {
-        "url": "https://github.com/0851/vdt-tool/issues"
+        "url": "https://github.com/shannonliang/vscode-js-intellisense/issues"
     },
-    "homepage": "https://github.com/0851/vdt-tool#readme",
-    "author": "wangjianliang",
+    "homepage": "https://github.com/shannonliang/vscode-js-intellisense/blob/master/README.md",
+    "author": "shannonliang",
     "license": "MIT",
     "dependencies": {
         "vscode-languageserver": "^3.5.0",
