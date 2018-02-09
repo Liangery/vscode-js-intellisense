@@ -1,10 +1,10 @@
 {
-    "name": "vdt-tool",
+    "name": "js-intellisense",
     "version": "1.3.0",
-    "displayName": "vdt扩展工具",
-    "description": "vdt 文件的VS Code 插件",
+    "displayName": "js-intellisense",
+    "description": "vscode javascript intellisense",
     "main": "index.js",
-    "icon": "asset/vdt.png",
+    "icon": "intell.png",
     "scripts": {
         "package": "vsce package",
         "publish": "npm run patch",
@@ -16,13 +16,13 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/0851/vdt-tool.git"
+        "url": "git+https://github.com/shannonliang/vscode-js-intellisense.git"
     },
     "keywords": [
-        "vdt",
-        "templates",
+        "javascript",
+        "intellisense",
         "vscode",
-        "intact"
+        "js"
     ],
     "author": "gaoyongliang",
     "license": "MIT",
