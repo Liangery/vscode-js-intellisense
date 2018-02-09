@@ -49,6 +49,9 @@ function initIntellisenseCompletionList() {
 }
 function validateTextDocument(textDocument){
     var textDoc = textDocument.getText();
+    console.log('ccccccccc');
+    console.log(textDoc);
+    console.log('ccccccccc');
     let lines = textDocument.getText().split(/\r?\n/g);
     if(lines.length == 0){
         return;
@@ -58,8 +61,8 @@ function validateTextDocument(textDocument){
     console.log('当前输入行的内容：' + lastLine);
     let curchart = lastLine[lastLine.length-1];
     if(curchart == '.'){
+        console.log('jinrogn')
         let wordsobj = lastLine.match(/\w{3,}(\w|\.)*/ig);
-    
         let lastWordObj = wordsobj[wordsobj.length - 1];
         let wordArr = lastWordObj.split('.');
         let firstWordObj = wordArr[0];
@@ -79,11 +82,11 @@ function getObjRef(str,name){
     var arr = [],
         r = getObjstr(str, name);
     if(r){
-        if(r.endsWith('.')){
+        if(r.endsWith('.') && r){
             r=r.Substring(0,r.Length-1);
         }
         var rArr = r.split('.');
-        for(var i=0;i<rArr.length;i++){
+        for(var i=1;i<rArr.length;i++){
             arr.push(rArr[i]);
         }
         if(rArr.length == 1){
@@ -91,7 +94,7 @@ function getObjRef(str,name){
         }
         return [].concat(arguments.callee(str,rArr[0])).concat(arr);
     }else{
-        return arr;
+        return [name];
     }
 
 }
@@ -292,15 +295,15 @@ connection.onCompletion(TextDocumentPositionParams => {
 
     return initIntellisenseList;
 });
-// connection.onCompletionResolve(item => {
-//     if (item.data === 1) {
-//         (item.detail = "TypeScript details"),
-//         (item.documentation = "TypeScript documentation");
-//     } else if (item.data === 2) {
-//         (item.detail = "JavaScript details"),
-//         (item.documentation = "JavaScript documentation");
-//     }
-//     return item;
-// });
+connection.onCompletionResolve(item => {
+    if (item.data === 1) {
+        (item.detail = "TypeScript details"),
+        (item.documentation = "TypeScript documentation");
+    } else if (item.data === 2) {
+        (item.detail = "JavaScript details"),
+        (item.documentation = "JavaScript documentation");
+    }
+    return item;
+});
 //智能感知部分结束
 connection.listen();
