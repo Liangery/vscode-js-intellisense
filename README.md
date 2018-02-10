@@ -5,7 +5,7 @@
 
 ```bash
 # 创建发布账户
-vsce create-publisher kingsoft
+vsce create-publisher shannonliang
 # token 需要联系我提供
  
 
