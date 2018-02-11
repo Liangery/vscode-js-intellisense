@@ -16,11 +16,12 @@ vsce create-publisher shannonliang
  
 
 # 发布
+执行发布，需要手动修改版本号
 npm run publish
-or
+
 npm run minor
-or 
+执行发布，自动修改版本号
 npm run major
-or
+执行发布，自动修改版本号
 npm run patch
 ```

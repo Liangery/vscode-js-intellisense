@@ -41,7 +41,7 @@
         "Snippets"
     ],
     "activationEvents": [
-        "*"
+        "onLanguage:javascript"
     ],
     "contributes": {},
     "devDependencies": {
@@ -49,5 +49,8 @@
         "vscode": "^1.1.10",
         "vscode-languageclient": "^3.5.0"
     },
-    "dependencies": {}
+    "dependencies": {
+        "vscode": "^1.1.10",
+        "vscode-languageclient": "^3.5.0"
+    }
 }

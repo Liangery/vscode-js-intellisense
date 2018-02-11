@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "compounds": [
         {
-            "name": "vdt-tool",
+            "name": "js-intellisense",
             "configurations": ["client","serve"]
         }
     ],
