@@ -51,14 +51,18 @@ function initIntellisenseCompletionList() {
     }
     if (baseConfig.basePath) {
         basePath = (workspacePath + '\\' + baseConfig.basePath).replace(/\//g, '\\');
-        // basePath.replace(/\//g, '\\');
     }
     if (baseConfig.includeFiles && baseConfig.includeFiles.length) {
         for (var i = 0; i < baseConfig.includeFiles.length; i++) {
             let includefilepath = baseConfig.includeFiles[i];
-            for (var j = 0; j < includefilepath.files.length; j++) {
-                let filetemp = basePath + '\\' + includefilepath.path + '\\' + includefilepath.files[j];
-                findAllFile(filetemp.replace(/\//g, '\\'));
+            let includepath = includefilepath.path ? (basePath + '\\' + includefilepath.path) : basePath;
+            if(includefilepath.files && includefilepath.files.length){
+                for (var j = 0; j < includefilepath.files.length; j++) {
+                    let filetemp = includepath + '\\' + includefilepath.files[j];
+                    findAllFile(filetemp);
+                }
+            }else{
+                findAllFile(includepath);
             }
         }
     } else {
@@ -67,16 +71,32 @@ function initIntellisenseCompletionList() {
     if(baseConfig.excludeFiles && baseConfig.excludeFiles.length){
         for(var i=0;i<baseConfig.excludeFiles.length;i++){
             let excludefilepath = baseConfig.excludeFiles[i];
-            for(var j=0;excludefilepath.files.length;j++){
-                let filetemp = basePath + '\\' + excludefilepath.path + '\\' + excludefilepath.files[j];
-                let index = initIntellisenseFiles.indexOf(filetemp);
-                if(index > -1 ){
-                    initIntellisenseFiles.splice(index,1);
+            
+            let excludepath = excludefilepath.path ? (basePath + '\\' + excludefilepath.path) : basePath;
+            
+            excludepath = excludepath.replace(/\//g, '\\');
+            
+            if(excludefilepath.files && excludefilepath.files.length){
+                for(var j=0;j<excludefilepath.files.length;j++){
+                    let filetemp = excludepath + '\\' + excludefilepath.files[j];
+                    removeInitIntellisenseFiles(filetemp);
                 }
+            }else{
+                removeInitIntellisenseFiles(excludepath);
             }
+            
         }
     }
+
     readAllFile(initIntellisenseFiles);
+}
+
+function removeInitIntellisenseFiles(str){
+    initIntellisenseFiles = initIntellisenseFiles.filter(function(v){
+        if(v.indexOf(str) == -1){
+            return true;
+        }
+    });
 }
 
 function setIntellisenseCompletionList() {
@@ -181,6 +201,7 @@ function getObjstr(str, name) {
 }
 
 function findAllFile(dir) {
+    dir = dir.replace(/\//g, '\\')
     if (isFile(dir)) {
         initIntellisenseFiles.push(dir);
         return;
