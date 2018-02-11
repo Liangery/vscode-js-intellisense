@@ -1,19 +1,12 @@
 {
     "name": "js-intellisense",
-    "version": "1.4.4",
+    "version": "1.4.3",
     "displayName": "js-intellisense",
     "description": "vscode javascript intellisense",
-    "main": "./client/index.js",
     "icon": "intell.png",
     "scripts": {
-        "vscode:prepublish": "",
-        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
-        "package": "vsce package",
-        "publish": "npm run patch",
-        "minor": "vsce publish minor",
-        "major": "vsce publish major",
-        "patch": "vsce publish patch",
-        "postinstall": "node ./node_modules/vscode/bin/install"
+        "update-vscode": "node ./node_modules/vscode/bin/install",
+		"postinstall": "node ./node_modules/vscode/bin/install"
     },
     "repository": {
         "type": "git",
@@ -41,15 +34,13 @@
         "Snippets"
     ],
     "activationEvents": [
-        "*"
+        "onLanguage:javascript"
     ],
     "contributes": {},
-    "devDependencies": {
-        "vsce": "^1.36.1",
-        "vscode": "^1.1.10",
-        "vscode-languageclient": "^3.5.0"
-    },
-    "dependencies":{
 
+    "dependencies":{
+		"vsce": "^1.36.1",
+        "vscode": "^1.1.10",
+		"vscode-languageclient": "^3.5.0"
     }
 }

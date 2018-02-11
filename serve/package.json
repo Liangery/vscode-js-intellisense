@@ -2,7 +2,6 @@
     "name": "js-intellisense-serve",
     "version": "1.0.0",
     "description": "js-intellisense-serve",
-    "main": "index.js",
     "scripts": {},
     "engines": {
         "node": ">=8"

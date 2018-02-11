@@ -1,4 +1,4 @@
-const { workspace, ExtensionContext } = require("vscode");
+const { workspace, ExtensionContext,window } = require("vscode");
 
 const {
     LanguageClient,
@@ -23,7 +23,7 @@ function activate(context) {
     let clientOptions = {
         documentSelector: [{ scheme: "file", language: "javascript" }]
     };
-    
+    // window.showInformationMessage('111');
     // 创建一个语言客户端并启动这个客户端。
     let disposable = new LanguageClient(
         "js",
