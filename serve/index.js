@@ -64,7 +64,18 @@ function initIntellisenseCompletionList() {
     } else {
         findAllFile(basePath);
     }
-
+    if(baseConfig.excludeFiles && baseConfig.excludeFiles.length){
+        for(var i=0;i<baseConfig.excludeFiles.length;i++){
+            let excludefilepath = baseConfig.excludeFiles[i];
+            for(var j=0;excludefilepath.files.length;j++){
+                let filetemp = basePath + '\\' + excludefilepath.path + '\\' + excludefilepath.files[j];
+                let index = initIntellisenseFiles.indexOf(filetemp);
+                if(index > -1 ){
+                    initIntellisenseFiles.splice(index,1);
+                }
+            }
+        }
+    }
     readAllFile(initIntellisenseFiles);
 }
 
@@ -194,7 +205,7 @@ function findAllFile(dir) {
 }
 
 function readAllFile(files) {
-    // console.log(files);
+
     var _jsWords = {
             "require": 1,
             "define": 1,
@@ -225,6 +236,7 @@ function readAllFile(files) {
             "with": 1
         },
         keyWords = [];
+    
     for (var i = 0; i < files.length; i++) {
         var file = files[i],
             fileDataString = readFile(file),
