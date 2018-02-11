@@ -285,7 +285,9 @@ function readAllFile(files) {
 }
 //检测智能提示的配置文件，只能是根目录存在的,返回基础配置的对象
 function initIntellisenseConfig() {
+
     var configJs = workspacePath + "\\intellisenseConfig.json";
+    console.log(configJs);
     if (!isFile(configJs)) {
         return;
     }
