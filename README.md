@@ -1,4 +1,5 @@
-# vdt-tool README
+# js-intellisense README
+
 
 ## publish
 发布使用 vsce 需要向安装
