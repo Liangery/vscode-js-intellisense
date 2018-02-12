@@ -1,7 +1,7 @@
 {
 	"name": "js-intellisense",
 	"description": "js-intellisense",
-	"version": "0.0.1",
+	"version": "1.4.6",
 	"author": "shannonliang",
 	"license": "MIT",
 	"engines": {
@@ -15,8 +15,8 @@
 		"vscode-languageserver": "^3.4.2"
 	},
 	"scripts": {
-		"installServer": "installServerIntoExtension ../client ./package.json ./tsconfig.json",
-		"compile": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc -p .",
-		"watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc -w -p ."
+		"installServer": "installServerIntoExtension ../client ./package.json",
+		"compile": "installServerIntoExtension ../client ./package.json ",
+		"watch": "installServerIntoExtension ../client ./package.json"
 	}
 }

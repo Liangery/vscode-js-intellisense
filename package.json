@@ -1,8 +1,8 @@
 {
 	"name": "js-intellisense",
 	"displayName": "js-intellisense",
-	"description": "Integrates js-intellisense into VS Code.",
-	"version": "1.4.6",
+	"description": "js-intellisense",
+	"version": "1.4.10",
 	"author": "shannonliang",
 	"license": "MIT",
 	"repository": {
@@ -31,8 +31,11 @@
 
 	},
 	"scripts": {
-		"watch:client": "tsc -w -p ./client/tsconfig.json",
-		"watch:server": "tsc -w -p ./server/tsconfig.json",
+		"vscode:prepublish": "cd client && npm run update-vscode && cd .. && npm run compile",
+		"compile:client": "tsc -p ./client/jsconfig.json",
+		"compile:server": "tsc -p ./server/jsconfig.json",
+		"watch:client": "tsc -w -p ./client/jsconfig.json",
+		"watch:server": "tsc -w -p ./server/jsconfig.json",
 		"compile": "npm run compile:client && npm run compile:server",
 		"postinstall": "cd client && npm install && cd ../server && npm install && cd .."
 	},
