@@ -1,56 +1,43 @@
 {
-    "name": "js-intellisense",
-    "version": "1.4.1",
-    "displayName": "js-intellisense",
-    "description": "vscode javascript intellisense",
-    "main": "index.js",
-    "icon": "intell.png",
-    "scripts": {
-        "vscode:prepublish": "",
-        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
-        "package": "vsce package",
-        "publish": "npm run patch",
-        "minor": "vsce publish minor",
-        "major": "vsce publish major",
-        "patch": "vsce publish patch",
-        "postinstall": "node ./node_modules/vscode/bin/install"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/shannonliang/vscode-js-intellisense.git"
-    },
-    "keywords": [
-        "javascript",
-        "intellisense",
-        "vscode",
-        "js"
-    ],
-    "author": "shannonliang",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/shannonliang/vscode-js-intellisense/issues"
-    },
-    "publisher": "shannonliang",
-    "homepage": "https://github.com/shannonliang/vscode-js-intellisense/blob/master/README.md",
-    "engines": {
-        "vscode": "^1.19.0"
-    },
-    "categories": [
-        "Languages",
-        "Other",
-        "Snippets"
-    ],
-    "activationEvents": [
-        "onLanguage:javascript"
-    ],
-    "contributes": {},
-    "devDependencies": {
-        "vsce": "^1.36.1",
-        "vscode": "^1.1.10",
-        "vscode-languageclient": "^3.5.0"
-    },
-    "dependencies": {
-        "vscode": "^1.1.10",
-        "vscode-languageclient": "^3.5.0"
-    }
+	"name": "js-test",
+	"displayName": "js-test",
+	"description": "Integrates js-intellisense into VS Code.",
+	"version": "1.4.5",
+	"author": "shannonliang",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/shannonliang/vscode-js-intellisense.git"
+	},
+	"bugs": {
+		"url": "https://github.com/shannonliang/vscode-js-intellisense/issues"
+	},
+	"publisher": "shannonliang",
+	"icon": "intell.png",
+	"categories": [
+		"Languages"
+	],
+	"keywords": [
+		"multi-root ready"
+	],
+	"engines": {
+		"vscode": "^1.16.0"
+	},
+	"activationEvents": [
+		"*"
+	],
+	"main": "./client/out/extension",
+	"contributes": {
+
+	},
+	"scripts": {
+		"watch:client": "tsc -w -p ./client/tsconfig.json",
+		"watch:server": "tsc -w -p ./server/tsconfig.json",
+		"compile": "npm run compile:client && npm run compile:server",
+		"postinstall": "cd client && npm install && cd ../server && npm install && cd .."
+	},
+	"devDependencies": {
+		"typescript": "^2.7.1",
+		"@types/node": "^6.0.90"
+	}
 }

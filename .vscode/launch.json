@@ -1,29 +1,27 @@
-// A launch configuration that launches the extension inside a new window
+// A launch configuration that compiles the extension and then opens it inside a new window
 {
-    "version": "1.0.0",
-    "compounds": [
-        {
-            "name": "js-intellisense",
-            "configurations": ["client","serve"]
-        }
-    ],
-    "configurations": [
-        {
-            "name": "client",
-            "type": "extensionHost",
-            "request": "launch",
-            "runtimeExecutable": "${execPath}",
-            "args": ["--extensionDevelopmentPath=${workspaceRoot}"],
-            "sourceMaps": true
-        },
-        {
-            "name": "serve",
-            "type": "node",
-            "request": "attach",
-            "port": 6888,
-            "protocol": "inspector",
-            "outFiles": ["${workspaceRoot}/serve/**/*.js"],
-            "sourceMaps": true
-        }
-    ]
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "extensionHost",
+			"request": "launch",
+			"name": "Launch Extension",
+			"runtimeExecutable": "${execPath}",
+			"args": ["--extensionDevelopmentPath=${workspaceRoot}" ],
+			"stopOnEntry": false,
+			"sourceMaps": true,
+			"outFiles": ["${workspaceRoot}/client/out/**/*.js"]
+			// "preLaunchTask": "watch"
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "Attach to Server",
+			"address": "localhost",
+			"protocol": "inspector",
+			"port": 6010,
+			"sourceMaps": true,
+			"outFiles": ["${workspaceRoot}/server/**/*.js"]
+		}
+	]
 }
