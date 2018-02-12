@@ -1,46 +1,45 @@
 {
-	"name": "js-intellisense",
-	"displayName": "js-intellisense",
-	"description": "js-intellisense",
-	"version": "1.4.10",
-	"author": "shannonliang",
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/shannonliang/vscode-js-intellisense.git"
-	},
-	"bugs": {
-		"url": "https://github.com/shannonliang/vscode-js-intellisense/issues"
-	},
-	"publisher": "shannonliang",
-	"icon": "intell.png",
-	"categories": [
-		"Languages"
-	],
-	"keywords": [
-		"multi-root ready"
-	],
-	"engines": {
-		"vscode": "^1.16.0"
-	},
-	"activationEvents": [
-		"*"
-	],
-	"main": "./client/out/extension",
-	"contributes": {
-
-	},
-	"scripts": {
-		"vscode:prepublish": "cd client && npm run update-vscode && cd .. && npm run compile",
-		"compile:client": "tsc -p ./client/jsconfig.json",
-		"compile:server": "tsc -p ./server/jsconfig.json",
-		"watch:client": "tsc -w -p ./client/jsconfig.json",
-		"watch:server": "tsc -w -p ./server/jsconfig.json",
-		"compile": "npm run compile:client && npm run compile:server",
-		"postinstall": "cd client && npm install && cd ../server && npm install && cd .."
-	},
-	"devDependencies": {
-		"typescript": "^2.7.1",
-		"@types/node": "^6.0.90"
-	}
+    "name": "js-intellisense",
+    "displayName": "js-intellisense",
+    "description": "js-intellisense",
+    "version": "1.4.11",
+    "author": "shannonliang",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/shannonliang/vscode-js-intellisense.git"
+    },
+    "bugs": {
+        "url": "https://github.com/shannonliang/vscode-js-intellisense/issues"
+    },
+    "publisher": "shannonliang",
+    "icon": "intell.png",
+    "categories": [
+        "Languages"
+    ],
+    "keywords": [
+        "multi-root ready"
+    ],
+    "engines": {
+        "vscode": "^1.16.0"
+    },
+    "activationEvents": [
+        "*"
+    ],
+    "main": "./client/out/extension",
+    "contributes": {},
+    "scripts": {
+        "package": "cd client && npm install && cd ../server && npm install && cd .. && vsce package",
+        "vscode:prepublish": "npm install && cd client && npm run update-vscode && cd .. && npm run compile",
+        "compile:client": "tsc -p ./client/jsconfig.json",
+        "compile:server": "tsc -p ./server/jsconfig.json",
+        "watch:client": "tsc -w -p ./client/jsconfig.json",
+        "watch:server": "tsc -w -p ./server/jsconfig.json",
+        "compile": "npm run compile:client && npm run compile:server",
+        "postinstall": "cd client && npm install && cd ../server && npm install && cd .."
+    },
+    "devDependencies": {
+        "typescript": "^2.7.1",
+        "@types/node": "^6.0.90"
+    }
 }
