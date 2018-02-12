@@ -1,0 +1,51 @@
+{
+    "name": "js-intellisense",
+    "version": "1.4.5",
+    "displayName": "js-intellisense",
+    "description": "vscode javascript intellisense",
+    "icon": "intell.png",
+    "publisher": "shannonliang",
+    "author": "shannonliang",
+    "main": "./client/out/extension",
+    "scripts": {
+		"watch:client": "tsc -w -p ./client/tsconfig.json",
+		"watch:server": "tsc -w -p ./server/tsconfig.json",
+		"compile": "npm run compile:client && npm run compile:server",
+		"postinstall": "cd client && npm install && cd ../server && npm install && cd .."
+	},
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/shannonliang/vscode-js-intellisense.git"
+    },
+    "keywords": [
+        "javascript",
+        "intellisense",
+        "vscode",
+        "js"
+    ],
+
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/shannonliang/vscode-js-intellisense/issues"
+    },
+
+    "homepage": "https://github.com/shannonliang/vscode-js-intellisense/blob/master/README.md",
+    "engines": {
+        "vscode": "^1.19.0"
+    },
+    "categories": [
+        "Languages",
+        "Other",
+        "Snippets"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "contributes": {},
+    "devDependencies": {
+        "vsce": "^1.36.1",
+        "vscode": "^1.1.10",
+        "vscode-languageclient": "^3.5.0"
+    },
+    "dependencies": {}
+}
