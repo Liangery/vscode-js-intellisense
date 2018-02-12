@@ -27,11 +27,11 @@ vsce create-publisher shannonliang
     ```
 + 执行发布，自动修改版本号 (2.0.0)
     ```
-    vsce publish minor
+    vsce publish major
     ```
 +   执行发布，自动修改版本号 (1.1.0)
     ```
-    vsce publish major
+    vsce publish minor
     ```
 + 执行发布，自动修改版本号(1.0.1)
     ```
