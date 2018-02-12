@@ -2,7 +2,7 @@
     "name": "js-intellisense",
     "displayName": "js-intellisense",
     "description": "js-intellisense",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "author": "shannonliang",
     "license": "MIT",
     "repository": {
@@ -31,6 +31,7 @@
     "scripts": {
         "package": "cd client && npm install && cd ../server && npm install && cd .. && vsce package",
         "vscode:prepublish": "npm install && cd client && npm run update-vscode && cd .. && npm run compile",
+        "publishCommit": "git add . && git commit -m '版本发布' && git push",
         "compile:client": "tsc -p ./client/jsconfig.json",
         "compile:server": "tsc -p ./server/jsconfig.json",
         "watch:client": "tsc -w -p ./client/jsconfig.json",
