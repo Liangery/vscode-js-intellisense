@@ -1,0 +1,29 @@
+{
+	"basePath": "test",
+	"includeFiles":{
+		"path":"",
+		"files":[]
+	},
+	"excludeFiles":{
+		"path":"",
+		"files":[]
+	},
+    "globalObject": {
+        "shannonliang": {
+            "utils": {}
+		},
+		"vscode":{
+			"show":{
+				"alert":{
+
+				}
+			},
+			"hide":{
+				"alert":{
+
+				}
+			},
+			"hello":null
+		}
+    }
+}
