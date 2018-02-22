@@ -3,13 +3,15 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"type": "extensionHost",
-			"request": "launch",
-			"name": "Launch Extension",
-			"runtimeExecutable": "${execPath}",
-			"args": ["--extensionDevelopmentPath=${workspaceRoot}" ],
+			"type": "extensionHost",//配置类型
+			"request": "launch",//请求配置类型
+			"name": "Launch Extension",//配置名称
+			"runtimeExecutable": "${execPath}",//绝对路径
+			"args": ["--extensionDevelopmentPath=${workspaceRoot}" ],//传递给程序的命令行参数
 			"stopOnEntry": false,
 			"sourceMaps": false,
+			//如果启用源映射，则这些 glob 模式将指定生成的 JavaScript 文件。
+			//如果模式以 "!" 开始，则排除这些文件。如果未指定，则生成的代码应与其源位于同一目录中
 			"outFiles": ["${workspaceRoot}/client/out/**/*.js"]
 			// "preLaunchTask": "watch"
 		},
@@ -19,7 +21,7 @@
 			"name": "Attach to Server",
 			"address": "localhost",
 			"protocol": "inspector",
-			"port": 6010,
+			"port": 7009, //端口需要跟 language server的端口一致
 			"sourceMaps": false,
 			"outFiles": ["${workspaceRoot}/server/**/*.js"]
 		}

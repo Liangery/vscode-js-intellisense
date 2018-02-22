@@ -20,16 +20,12 @@
     "keywords": [
         "multi-root ready"
     ],
-    "engines": {
-        "vscode": "^1.16.0"
-    },
-    "activationEvents": [
-        "*"
-    ],
+    "engines": {"vscode": "^1.16.0"},
+    "activationEvents": ["*"],
     "main": "./client/out/extension",
     "contributes": {},
     "scripts": {
-        "package": "cd client && npm install && cd ../server && npm install && cd .. && vsce package",
+        "package": "npm run postinstall && vsce package",
         "vscode:prepublish": "npm install && cd client && npm run update-vscode && cd .. && npm run compile",
         "publishCommit": "git add . && git commit -m '版本发布' && git push",
         "compile:client": "tsc -p ./client/jsconfig.json",

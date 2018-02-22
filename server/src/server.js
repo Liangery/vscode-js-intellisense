@@ -5,7 +5,25 @@ const {
     TextDocumentSyncKind,
     CompletionItemKind
 } = require("vscode-languageserver");
+
 const fs = require("fs");
+var workspacePath = "D:\\web\\mobile\\afp\\js\\_ccj_",
+    initIntellisenseFiles = [],
+    initIntellisenseList = [{
+        label: "shannonliang",
+        kind: CompletionItemKind.Text,
+        data: 1
+    }],
+    curIntellisenseList = [],
+    curIntellisenseIndex = -1,
+    curConfigObj = {},
+    curFindObjFlag = 0,
+    initIntellisenseIndex = 0,
+    configStr = '',
+    baseConfig = null,//当前的配置的对象
+    keyWordsByObj = [], //解析当前配置的对象
+    curLineIntellisenseList = [];
+
 // Creates the LSP connection
 const connection = createConnection(ProposedFeatures.all);
 // Create a manager for open text documents
@@ -25,22 +43,86 @@ documents.onDidChangeContent(change => {
     // console.log(change);
     validateTextDocument(change.document);
 });
-var workspacePath = "D:\\web\\mobile\\afp\\js\\_ccj_",
-    initIntellisenseFiles = [],
-    initIntellisenseList = [{
-        label: "shannonliang",
-        kind: CompletionItemKind.Text,
-        data: 1
-    }],
-    curIntellisenseList = [],
-    curIntellisenseIndex = -1,
-    curConfigObj = {},
-    curFindObjFlag = 0,
-    initIntellisenseIndex = 0,
-    configStr = '',
-    baseConfig = null,
-    keyWordsByObj = [], //解析当前配置的对象
-    curLineIntellisenseList = [];
+//初始化设置
+connection.onInitialize(params => {
+    workspacePath = params.rootPath;
+    // connection.console.log(
+    // `[Server(${process.pid}) Started and initialize received,path  ${workspacePath}`
+    // );
+    initIntellisenseCompletionList();
+
+    return {
+        capabilities: {
+            textDocumentSync: documents.syncKind,
+            completionProvider: {
+                resolveProvider: true,
+                triggerCharacters: [".", ":", "<", '"', "/", "@", "*"]
+            },
+            documentFormattingProvider: true,
+            // hoverProvider: true,
+            documentHighlightProvider: true,
+            documentSymbolProvider: true,
+            definitionProvider: true,
+            referencesProvider: true,
+            colorProvider: true
+        }
+    };
+});
+//监听鼠标滑过事件
+// connection.onHover(textDocumentPosition => {
+//     const document = documents.get(textDocumentPosition.textDocument.uri);
+//     console.log(document);
+// });
+
+connection.onDocumentSymbol(documentSymbolParms => {
+    const document = documents.get(documentSymbolParms.textDocument.uri);
+    // console.log(document);
+});
+//监听定义
+connection.onDefinition(definitionParams => {
+    const document = documents.get(definitionParams.textDocument.uri);
+    // console.log(definitionParams, "definitionParams");
+});
+//文档引用
+connection.onReferences(referenceParams => {
+    const document = documents.get(referenceParams.textDocument.uri);
+    // console.log(referenceParams, "referenceParams");
+});
+
+//文档格式化
+connection.onDocumentFormatting(formatParams => {
+    const document = documents.get(formatParams.textDocument.uri);
+    // console.log(formatParams, "formatParams");
+});
+
+connection.onDocumentHighlight(documentHighlightParams => {
+    const document = documents.get(documentHighlightParams.textDocument.uri);
+    // console.log('onDocumentHighlight');
+});
+
+//智能感知部分开始
+connection.onCompletion(TextDocumentPositionParams => {
+    // console.log(curIntellisenseList, "TextDocumentPositionParams");
+    // let curLineIndex = TextDocumentPositionParams.position.line;
+    // let curLineCharIndex = TextDocumentPositionParams.position.character;
+    console.log(curIntellisenseIndex + "  curIntellisenseListIndex");
+    if (curIntellisenseList && curIntellisenseList.length) {
+        return curIntellisenseList;
+    }
+    return initIntellisenseList;
+});
+connection.onCompletionResolve(item => {
+    if (item.data === 1) {
+        (item.detail = "TypeScript details"),
+        (item.documentation = "TypeScript documentation");
+    } else if (item.data === 2) {
+        (item.detail = "JavaScript details"),
+        (item.documentation = "JavaScript documentation");
+    }
+    return item;
+});
+//智能感知部分结束
+connection.listen();
 
 function initIntellisenseCompletionList() {
     var basePath = workspacePath;
@@ -56,32 +138,32 @@ function initIntellisenseCompletionList() {
         for (var i = 0; i < baseConfig.includeFiles.length; i++) {
             let includefilepath = baseConfig.includeFiles[i];
             let includepath = includefilepath.path ? (basePath + '\\' + includefilepath.path) : basePath;
-            if(includefilepath.files && includefilepath.files.length){
+            if (includefilepath.files && includefilepath.files.length) {
                 for (var j = 0; j < includefilepath.files.length; j++) {
                     let filetemp = includepath + '\\' + includefilepath.files[j];
                     findAllFile(filetemp);
                 }
-            }else{
+            } else {
                 findAllFile(includepath);
             }
         }
     } else {
         findAllFile(basePath);
     }
-    if(baseConfig.excludeFiles && baseConfig.excludeFiles.length){
-        for(var i=0;i<baseConfig.excludeFiles.length;i++){
+    if (baseConfig.excludeFiles && baseConfig.excludeFiles.length) {
+        for (var i = 0; i < baseConfig.excludeFiles.length; i++) {
             let excludefilepath = baseConfig.excludeFiles[i];
 
             let excludepath = excludefilepath.path ? (basePath + '\\' + excludefilepath.path) : basePath;
 
             excludepath = excludepath.replace(/\//g, '\\');
 
-            if(excludefilepath.files && excludefilepath.files.length){
-                for(var j=0;j<excludefilepath.files.length;j++){
+            if (excludefilepath.files && excludefilepath.files.length) {
+                for (var j = 0; j < excludefilepath.files.length; j++) {
                     let filetemp = excludepath + '\\' + excludefilepath.files[j];
                     removeInitIntellisenseFiles(filetemp);
                 }
-            }else{
+            } else {
                 removeInitIntellisenseFiles(excludepath);
             }
 
@@ -91,9 +173,9 @@ function initIntellisenseCompletionList() {
     readAllFile(initIntellisenseFiles);
 }
 
-function removeInitIntellisenseFiles(str){
-    initIntellisenseFiles = initIntellisenseFiles.filter(function(v){
-        if(v.indexOf(str) == -1){
+function removeInitIntellisenseFiles(str) {
+    initIntellisenseFiles = initIntellisenseFiles.filter(function (v) {
+        if (v.indexOf(str) == -1) {
             return true;
         }
     });
@@ -227,36 +309,7 @@ function findAllFile(dir) {
 
 function readAllFile(files) {
 
-    var _jsWords = {
-            "require": 1,
-            "define": 1,
-            "break": 1,
-            "case": 1,
-            "catch": 1,
-            "continue": 1,
-            "default": 1,
-            "delete": 1,
-            "do": 1,
-            "else": 1,
-            "finally": 1,
-            "for": 1,
-            "function": 1,
-            "if": 1,
-            "in": 1,
-            "instanceof": 1,
-            'new': 1,
-            "return": 1,
-            "switch": 1,
-            "this": 1,
-            "throw": 1,
-            "try": 1,
-            "typeof": 1,
-            "var": 1,
-            "void": 1,
-            "while": 1,
-            "with": 1
-        },
-        keyWords = [];
+    var keyWords = [],_jsWords={};
 
     for (var i = 0; i < files.length; i++) {
         var file = files[i],
@@ -283,19 +336,32 @@ function readAllFile(files) {
 
     // console.log( '智能提示解析的关键字的长度：'+initIntellisenseList.length);
 }
+
 //检测智能提示的配置文件，只能是根目录存在的,返回基础配置的对象
 function initIntellisenseConfig() {
-
     var configJs = workspacePath + "\\intellisenseConfig.json";
-    console.log(configJs);
+
     if (!isFile(configJs)) {
-        return;
+        var dirArr = fs.readdirSync(workspacePath),
+            tempdir = '';
+
+        for(var i=0;i<dirArr.length;i++){
+            if (dirArr[i].startsWith('.')) {
+                continue;
+            }
+            tempdir = workspacePath + '\\' + dirArr[i];
+            if(isDirectory(tempdir)){
+                configJs = tempdir + "\\intellisenseConfig.json";
+                if (!isFile(configJs)) {
+                    console.log('未找到配置文件');
+                    return;
+                }
+                break;
+            }
+        }
     }
     configStr = readFile(configJs);
     let fileDataObj = JSON.parse(configStr);
-    if (fileDataObj.globalObject) {
-        curConfigObj = fileDataObj.globalObject;
-    }
     return fileDataObj;
 }
 
@@ -343,83 +409,3 @@ function readFile(fileName) {
     if (fs.existsSync(fileName)) return fs.readFileSync(fileName, "utf-8");
 }
 
-//初始化设置
-connection.onInitialize(params => {
-    workspacePath = params.rootPath;
-    // connection.console.log(
-    // `[Server(${process.pid}) Started and initialize received,path  ${workspacePath}`
-    // );
-    initIntellisenseCompletionList();
-
-    return {
-        capabilities: {
-            textDocumentSync: documents.syncKind,
-            completionProvider: {
-                resolveProvider: true,
-                triggerCharacters: [".", ":", "<", '"', "/", "@", "*"]
-            },
-            documentFormattingProvider: true,
-            // hoverProvider: true,
-            documentHighlightProvider: true,
-            documentSymbolProvider: true,
-            definitionProvider: true,
-            referencesProvider: true,
-            colorProvider: true
-        }
-    };
-});
-//监听鼠标滑过事件
-// connection.onHover(textDocumentPosition => {
-//     const document = documents.get(textDocumentPosition.textDocument.uri);
-//     console.log(document);
-// });
-
-connection.onDocumentSymbol(documentSymbolParms => {
-    const document = documents.get(documentSymbolParms.textDocument.uri);
-    // console.log(document);
-});
-//监听定义
-connection.onDefinition(definitionParams => {
-    const document = documents.get(definitionParams.textDocument.uri);
-    // console.log(definitionParams, "definitionParams");
-});
-//文档引用
-connection.onReferences(referenceParams => {
-    const document = documents.get(referenceParams.textDocument.uri);
-    // console.log(referenceParams, "referenceParams");
-});
-
-//文档格式化
-connection.onDocumentFormatting(formatParams => {
-    const document = documents.get(formatParams.textDocument.uri);
-    // console.log(formatParams, "formatParams");
-});
-
-connection.onDocumentHighlight(documentHighlightParams => {
-    const document = documents.get(documentHighlightParams.textDocument.uri);
-    // console.log('onDocumentHighlight');
-});
-
-//智能感知部分开始
-connection.onCompletion(TextDocumentPositionParams => {
-    // console.log(curIntellisenseList, "TextDocumentPositionParams");
-    // let curLineIndex = TextDocumentPositionParams.position.line;
-    // let curLineCharIndex = TextDocumentPositionParams.position.character;
-    console.log(curIntellisenseIndex + "  curIntellisenseListIndex");
-    if (curIntellisenseList && curIntellisenseList.length) {
-        return curIntellisenseList;
-    }
-    return initIntellisenseList;
-});
-connection.onCompletionResolve(item => {
-    if (item.data === 1) {
-        (item.detail = "TypeScript details"),
-        (item.documentation = "TypeScript documentation");
-    } else if (item.data === 2) {
-        (item.detail = "JavaScript details"),
-        (item.documentation = "JavaScript documentation");
-    }
-    return item;
-});
-//智能感知部分结束
-connection.listen();
