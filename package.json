@@ -30,7 +30,7 @@
   "contributes": {},
   "scripts": {
     "package": "npm run postinstall && vsce package",
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm install && cd client && npm run update-vscode && cd .. && npm run compile",
     "publishCommit": "git add . && git commit -m '版本发布' && git push",
     "compile:client": "tsc -p ./client/jsconfig.json",
     "compile:server": "tsc -p ./server/jsconfig.json",
