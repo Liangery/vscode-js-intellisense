@@ -142,12 +142,15 @@ class Ternjs {
 	}
 
     mergeProjCfg() {
-		const cfgFile = path.join(this.projDir, cfgFileName);
+        const cfgFile = path.join(this.projDir, cfgFileName);
 		try {
-			const cfg = JSON.parse(fs.readFileSync(cfgFile,"utf8"));
+            const cfg = JSON.parse(fs.readFileSync(cfgFile,"utf8"));
+
 			this.cfg = Object.assign(this.cfg, cfg);
 		}
-		catch (e) { }
+		catch (e) {
+            console.log(e);
+         }
 
     }
     // temporarily only supports plugins which are ternjs self-contained

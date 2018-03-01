@@ -1,47 +1,47 @@
 {
-  "name": "js-intellisense",
-  "displayName": "js-intellisense",
-  "description": "js-intellisense",
-  "version": "3.0.15",
-  "author": "shannonliang",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/shannonliang/vscode-js-intellisense.git"
-  },
-  "bugs": {
-    "url": "https://github.com/shannonliang/vscode-js-intellisense/issues"
-  },
-  "publisher": "shannonliang",
-  "icon": "intell.png",
-  "categories": [
-    "Languages"
-  ],
-  "keywords": [
-    "multi-root ready"
-  ],
-  "engines": {
-    "vscode": "^1.16.0"
-  },
-  "activationEvents": [
-    "*"
-  ],
-  "main": "./client/out/extension",
-  "contributes": {},
-  "scripts": {
-    "package": "npm run postinstall && vsce package",
-    "vscode:prepublish": "npm install && cd client && npm run update-vscode && cd .. && npm run compile",
-    "publishCommit": "git add . && git commit -m '版本发布' && git push",
-    "compile:client": "tsc -p ./client/jsconfig.json",
-    "compile:server": "tsc -p ./server/jsconfig.json",
-    "watch:client": "tsc -w -p ./client/jsconfig.json",
-    "watch:server": "tsc -w -p ./server/jsconfig.json",
-    "compile": "npm run compile:client && npm run compile:server",
-    "postinstall": "cd client && npm install && cd ../server && npm install && cd .."
-  },
-  "devDependencies": {
-    "typescript": "^2.7.1",
-    "@types/node": "^6.0.90"
-  },
-  "dependencies": {}
+    "name": "js-intellisense",
+    "displayName": "js-intellisense",
+    "description": "js-intellisense",
+    "version": "3.0.17",
+    "author": "shannonliang",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/shannonliang/vscode-js-intellisense.git"
+    },
+    "bugs": {
+        "url": "https://github.com/shannonliang/vscode-js-intellisense/issues"
+    },
+    "publisher": "shannonliang",
+    "icon": "intell.png",
+    "categories": [
+        "Languages"
+    ],
+    "keywords": [
+        "multi-root ready"
+    ],
+    "engines": {
+        "vscode": "^1.16.0"
+    },
+    "activationEvents": [
+        "*"
+    ],
+    "main": "./client/out/extension",
+    "contributes": {},
+    "scripts": {
+        "package": "npm run postinstall && vsce package",
+        "vscode:prepublish": "npm install && cd client && npm run update-vscode && cd .. && npm run compile",
+        "publishCommit": "git add . && git commit -m '版本发布' && git push",
+        "compile:client": "tsc -p ./client/jsconfig.json",
+        "compile:server": "tsc -p ./server/jsconfig.json",
+        "watch:client": "tsc -w -p ./client/jsconfig.json",
+        "watch:server": "tsc -w -p ./server/jsconfig.json",
+        "compile": "npm run compile:client && npm run compile:server",
+        "postinstall": "cd client && npm install && cd ../server && npm install && cd .."
+    },
+    "devDependencies": {
+        "typescript": "^2.7.1",
+        "@types/node": "^6.0.90"
+    },
+    "dependencies": {}
 }

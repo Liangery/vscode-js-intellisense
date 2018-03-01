@@ -55,7 +55,9 @@ connection.onCompletion((params) => __awaiter(this, void 0, void 0, function* ()
         file = vscode_uri_1.default.file(file).fsPath;
     const loc = { line: params.position.line, ch: params.position.character};
     const completions = yield ternSrv.completions(file,loc);
+
     if(completions.completions && completions.completions.length){
+
         return completionsApi1.completionsApi.getVscodeCompletions(ternSrv.srv,completions.completions);
     }
     else{
@@ -65,7 +67,7 @@ connection.onCompletion((params) => __awaiter(this, void 0, void 0, function* ()
         let word = '';
         for(var i=words.length-1;i>-1;i--){
             if(words[i].trim()){
-                word = words[i];
+                word = words[i].replace(/\s/g,'');
                 break;
             }
         }
@@ -96,4 +98,3 @@ connection.onDefinition((params) => __awaiter(this, void 0, void 0, function* ()
 }));
 
 connection.listen();
-//# sourceMappingURL=server.js.map

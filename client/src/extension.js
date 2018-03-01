@@ -23,7 +23,6 @@ function activate(context) {
     let clientOptions = {
         documentSelector: [{ scheme: "file", language: "javascript" }]
     };
-
     // 创建一个语言客户端并启动这个客户端。
     let disposable = new LanguageClient(
         "js",

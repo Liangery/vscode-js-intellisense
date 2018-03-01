@@ -13,11 +13,8 @@
   },
   "dependencies": {
     "vscode-languageserver": "^3.5.0",
-    "acorn": "^4.0.9",
-    "enhanced-resolve": "^2.3.0",
     "glob": "^7.1.2",
     "minimatch": "^3.0.4",
-    "resolve-from": "2.0.0",
     "tern": "^0.21.0"
   },
   "scripts": {

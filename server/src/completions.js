@@ -130,7 +130,7 @@ function getVscodeCompletionsMaybe(srv,word){
 		return;
 	}
 	let completions = searchSrvPropty(srv,word);
-
+	console.log(completions);
 	return getVscodeCompletions(srv,completions);
 
 }
