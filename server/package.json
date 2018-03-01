@@ -1,7 +1,7 @@
 {
   "name": "js-intellisense",
   "description": "js-intellisense",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "author": "shannonliang",
   "license": "MIT",
   "engines": {
@@ -12,14 +12,18 @@
     "url": "https://github.com/shannonliang/vscode-js-intellisense.git"
   },
   "dependencies": {
+    "acorn": "^4.0.9",
+    "enhanced-resolve": "^2.3.0",
     "glob": "^7.1.2",
     "minimatch": "^3.0.4",
+    "resolve-from": "2.0.0",
     "tern": "^0.21.0",
-    "vscode-languageserver": "^3.4.2"
+    "vscode-languageserver": "^3.5.0"
   },
   "scripts": {
     "installServer": "installServerIntoExtension ../client ./package.json",
     "compile": "installServerIntoExtension ../client ./package.json ",
     "watch": "installServerIntoExtension ../client ./package.json"
-  }
+  },
+  "devDependencies": {}
 }
