@@ -9,7 +9,7 @@ const {
 const path = require("path");
 
 function activate(context) {
-    let serverModule = context.asAbsolutePath(path.join('server', 'out', 'server.js'));
+    let serverModule = context.asAbsolutePath(path.join('server', 'out', 'server-tern.js'));
     // 服务的调试选项
     let debugOptions = { execArgv: ["--nolazy", "--inspect=7009"] };
     let serverOptions = {
