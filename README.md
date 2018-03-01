@@ -1,11 +1,35 @@
 # js-intellisense README
 
+从版本3.0.0开始，本插件开始使用javascript分析引擎tern.js进行分析，[tern.js的文档](http://ternjs.net/doc/manual.html),tern.js使用的js静态抽象语法树是[acorn](https://github.com/acornjs/acorn)
+## 功能
+1. 自动提示对象的属性
+2. 分析是对象属性还是方法
+3. 结合ternjs进行了部分扩展，requirejs的时候，在模块中用window中的对象定义的时候，在使用的模块，不能分析出window中的该对象的属性
+
+## 待完成
+1. 查找引用
+2. 查找定义
 
 ## 配置说明
-    basePath : 基础智能提示解析文件目录
-    includeFiles : 需要解析的具体文件，当有此配置项的时候，其他文件不会被解析。属性path和files，需要配置。
-    excludeFiles: 不需要解析的文件，有此配置的时候，该文件不会被解析。可以配置jquery，等等基础的文件。
-    globalObject : 全局的对象索引，优先级比较高，如果你输入了改对象，并且输入'.'进行智能提示的时候，会先按照此配置项，进行提示。
+在根目录添加 `.tern-project` 的配置文件，具体的配置介绍请查看tern文档，例子如下
+   ```
+   {
+  "libs": [
+    "browser",
+    "jquery"
+  ],
+  "loadEagerly": [
+  ],
+  "plugins": {
+    "requirejs": {
+      "baseURL": "./",
+      "paths": {
+        "utils":"js/_ccj_/utils"
+      }
+    }
+  }
+}
+   ```
 
 
 ## vsce 命令简介

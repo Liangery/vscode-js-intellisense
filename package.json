@@ -2,7 +2,7 @@
     "name": "js-intellisense",
     "displayName": "js-intellisense",
     "description": "js-intellisense",
-    "version": "2.0.2",
+    "version": "3.0.0",
     "author": "shannonliang",
     "license": "MIT",
     "repository": {
@@ -20,8 +20,12 @@
     "keywords": [
         "multi-root ready"
     ],
-    "engines": {"vscode": "^1.16.0"},
-    "activationEvents": ["*"],
+    "engines": {
+        "vscode": "^1.16.0"
+    },
+    "activationEvents": [
+        "*"
+    ],
     "main": "./client/out/extension",
     "contributes": {},
     "scripts": {
