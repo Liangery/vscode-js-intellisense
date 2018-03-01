@@ -12,6 +12,8 @@
     "url": "https://github.com/shannonliang/vscode-js-intellisense.git"
   },
   "dependencies": {
+    "glob": "^7.1.2",
+    "minimatch": "^3.0.4",
     "tern": "^0.21.0",
     "vscode-languageserver": "^3.4.2"
   },

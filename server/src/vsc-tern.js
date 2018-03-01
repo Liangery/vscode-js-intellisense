@@ -156,9 +156,6 @@ class Ternjs {
         return Object.keys(plugins).reduce((opts, name) => {
             const found = require.resolve(`tern/plugin/${name}.js`);
 			const mod = require(found);
-			console.log('name',name)
-
-			console.log('mod',mod)
             if (mod.hasOwnProperty("initialize"))
                 mod.initialize(this.projDir);
 			opts[name] = plugins[name];
@@ -168,7 +165,6 @@ class Ternjs {
     initialize() {
         this.mergeProjCfg();
 		let plugins = this.loadPlugins();
-		console.log('plugins',plugins);
         Object.assign(this.cfg, {
             getFile: (name, c) => {
                 const dontLoad = this.cfg.dontLoad &&
@@ -187,7 +183,6 @@ class Ternjs {
                 return path.relative(this.projDir, p);
             }
 		});
-		console.log(this.cfg)
         this.srv = new tern.Server(this.cfg);
         if (this.cfg.loadEagerly)
             this.cfg.loadEagerly.forEach((pat) => {
